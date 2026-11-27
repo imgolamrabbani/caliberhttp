@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentation — CaliberHTTP</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">⚡ CaliberHTTP</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="docs.html">Docs</a>
+        <a href="privacy.html">Privacy</a>
+        <button id="theme-toggle" class="theme-btn" type="button">Light Mode</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container prose">
+    <h1>CaliberHTTP Documentation</h1>
+    <p class="lead">Get started in under 30 seconds—no login, no cloud sync, and full compatibility with plain-text <code>.http</code> files.</p>
+
+    <h2>1. 30-Second Quickstart</h2>
+    <ol>
+      <li>Install <strong>CaliberHTTP</strong> from the VS Code Marketplace or Open VSX.</li>
+      <li>Click the <strong>CaliberHTTP</strong> icon in the Activity Bar.</li>
+      <li>If your workspace already contains <code>.http</code> or <code>.rest</code> files, they appear automatically. Otherwise click <strong>Create Starter Collection (<code>api.http</code>)</strong>.</li>
+      <li>Click <code>▶ Send Request</code> above any request block—or <code>◫ Open in Studio</code> for the split visual editor.</li>
+    </ol>
+
+    <h2>2. <code>.http</code> Syntax Reference</h2>
+    <pre>### Create User
+@name createUser
+@base = https://httpbin.org
+
+POST {{base}}/post
+Content-Type: application/json
+X-Trace-Id: {{$uuid}}
+
+{
+  "createdAt": "{{$timestamp}}",
+  "role": "developer"
+}
+
+@assert status == 200
+@assert latency &lt; 1000
+@assert body.$.json.role == "developer"</pre>
+    <ul>
+      <li><code>### Title</code> — Separates requests and names them in the sidebar &amp; CodeLens.</li>
+      <li><code>@var = value</code> — File-scoped variables.</li>
+      <li><code>@name stepId</code> — Names a request so later requests can reference <code>{{stepId.response.body.$.field}}</code> or <code>{{stepId.response.headers.x-token}}</code>.</li>
+      <li><code>@assert target op value</code> — Supports <code>status</code>, <code>latency</code>, <code>header.&lt;name&gt;</code>, and <code>body.&lt;jsonpath&gt;</code> with <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>contains</code>, <code>exists</code>.</li>
+    </ul>
+
+    <h2>3. Environments &amp; Dynamic Variables</h2>
+    <p>Place a <code>caliber.env.json</code> or <code>.env</code> file in your workspace root and switch active environments from the top Studio bar or status bar:</p>
+    <pre>{
+  "dev": { "baseUrl": "http://127.0.0.1:3000" },
+  "staging": { "baseUrl": "https://staging.api.example.com" }
+}</pre>
+    <p>Built-in dynamic variables: <code>{{$uuid}}</code> and <code>{{$timestamp}}</code>.</p>
+
+    <h2>4. Pro Features Guide</h2>
+    <ul>
+      <li><strong>Multi-Step Request Chaining:</strong> Run an entire <code>.http</code> file sequentially via <code>▶ Run Chain</code> CodeLens and export JUnit XML, Markdown, or JSON test reports.</li>
+      <li><strong>Schema Drift Detector:</strong> Pin any JSON response as a baseline. Subsequent runs flag removed fields, added fields, or breaking type changes.</li>
+      <li><strong>Local <code>127.0.0.1</code> Mock Server:</strong> Start a local <code>node:http</code> mock server from any <code>.http</code> fixture file or OpenAPI 3.0/3.1 JSON spec.</li>
+      <li><strong>HAR-to-<code>.http</code> Importer:</strong> Import browser DevTools <code>.har</code> captures into clean, deduplicated <code>.http</code> collections with automatic <code>{{baseUrl}}</code> extraction.</li>
+      <li><strong>AES-256-GCM Secret Vault:</strong> Encrypt sensitive tokens in <code>.caliber/vault.enc</code> using PBKDF2-SHA256 + AES-256-GCM so secrets can be safely committed.</li>
+    </ul>
+
+    <h2>5. Polar.sh License Activation &amp; 14-Day Offline Grace</h2>
+    <ol>
+      <li>Purchase a Pro license via <a data-polar-checkout="primary" href="https://buy.polar.sh/polar_cl_npSDaxVmLTXH6L1DLkqhgS5PR8ASl9JpLa4u93CrKhy" target="_blank" rel="noopener">Polar.sh</a> ($19 Early Bird / $24 Standard One-Time / $5/mo).</li>
+      <li>In VS Code, run command <code>CaliberHTTP: Activate Pro License</code> and paste your key.</li>
+      <li>Your key is stored in VS Code's OS-Keychain-backed <code>SecretStorage</code>. Cached validations remain valid for 72 hours without network calls, with a <strong>14-day offline grace period</strong> if you are offline.</li>
+      <li>Run <code>CaliberHTTP: Deactivate License</code> anytime to free a machine seat (up to 3 personal machines).</li>
+    </ol>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2026 CaliberHTTP</span>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

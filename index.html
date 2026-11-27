@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CaliberHTTP — Git-Native .http Studio &amp; Local API Runner for VS Code</title>
+  <meta name="description" content="Git-Native .http Studio & Local API Runner for VS Code, Cursor & Windsurf. Zero Login. Zero Cloud Lock-In. Zero Telemetry." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <span>⚡ CaliberHTTP</span>
+      </a>
+      <nav class="nav-links">
+        <a class="hide-sm" href="#features">Features</a>
+        <a class="hide-sm" href="#pricing">Pricing</a>
+        <a href="docs.html">Docs</a>
+        <a href="privacy.html">Privacy</a>
+        <button id="theme-toggle" class="theme-btn" type="button">Light Mode</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <div class="pill">● Zero Login · Zero Telemetry · 100% Local</div>
+        <h1>Git-Native <span class="grad">.http Studio</span> &amp; Local API Runner for VS Code</h1>
+        <p class="lead">Zero Login. Zero Cloud Lock-In. Edit requests in plain-text <code>.http</code> files or a fast two-way Visual Studio inside VS Code, Cursor, Windsurf, and VSCodium.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://marketplace.visualstudio.com/items?itemName=caliberhttp.caliberhttp" target="_blank" rel="noopener">Install on VS Code Marketplace</a>
+          <a class="btn btn-secondary" href="https://open-vsx.org/extension/caliberhttp/caliberhttp" target="_blank" rel="noopener">Install on Open VSX</a>
+        </div>
+        <div class="trust-note">Core Free Forever ($0) · Works offline on localhost/LAN/VPN · Compatible with existing <code>.http</code> / <code>.rest</code> files</div>
+      </div>
+
+      <div class="preview-card" aria-label="Interactive .http code preview">
+        <div class="preview-tabs">
+          <button class="preview-tab active" type="button" data-snippet="chain">Auth + Chain</button>
+          <button class="preview-tab" type="button" data-snippet="graphql">GraphQL</button>
+          <button class="preview-tab" type="button" data-snippet="drift">Schema Drift</button>
+        </div>
+        <pre id="preview-code" class="preview-code">### Authenticate &amp; Capture Token
+@name login
+POST {{baseUrl}}/v1/auth/login
+Content-Type: application/json
+X-Request-Id: {{$uuid}}
+
+{ "email": "{{userEmail}}", "role": "admin" }
+
+@assert status == 200
+@assert body.$.token exists
+
+### Fetch Profile (Chained)
+GET {{baseUrl}}/v1/me
+Authorization: Bearer {{login.response.body.$.token}}</pre>
+        <div class="preview-footer">
+          <span>collections/auth.http</span>
+          <span id="preview-status" class="status-badge">200 OK · 24 ms · 2/2 Assertions Passed</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <h2 class="section-title">Built for developers tired of cloud walls</h2>
+      <p class="section-sub">Everything Thunder Client users lost behind paywalls and everything REST Client lacked in GUI ergonomics—unified in one local-first extension.</p>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Two-Way .http Sync</h3>
+          <p>Edit in the Visual Request Builder or directly in your <code>.http</code> / <code>.rest</code> file. Comments, variables, and formatting stay intact.</p>
+        </div>
+        <div class="card">
+          <h3>Git-Native Collections</h3>
+          <p>No opaque SQLite blobs or cloud sync required. Review API changes in pull requests right alongside your backend code.</p>
+        </div>
+        <div class="card">
+          <h3>Inline CodeLens &amp; Shortcuts</h3>
+          <p>Click <code>▶ Send Request</code> above any block or press <code>Cmd/Ctrl+Enter</code> to execute and inspect JSON, headers, and timing.</p>
+        </div>
+        <div class="card">
+          <h3>Multi-Step Chaining &amp; @assert</h3>
+          <p>Pass tokens with <code>{{login.response.body.$.token}}</code>, assert status/latency/JSONPath, and export JUnit XML or Markdown reports.</p>
+        </div>
+        <div class="card">
+          <h3>Schema Drift &amp; 127.0.0.1 Mock</h3>
+          <p>Pin JSON baselines to catch breaking API changes, or spin up an instant local mock server from <code>.http</code> or OpenAPI 3.x specs.</p>
+        </div>
+        <div class="card">
+          <h3>HAR Import &amp; AES-256 Vault</h3>
+          <p>Convert browser DevTools <code>.har</code> captures into clean <code>.http</code> suites and store secrets in Git-safe <code>.caliber/vault.enc</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="section">
+      <h2 class="section-title">Simple, Honest Pricing</h2>
+      <p class="section-sub">Core daily API workflows are free forever. Upgrade only if you want Pro automation—one-time perpetual license or flexible monthly via Polar.sh.</p>
+
+      <div class="pricing-grid">
+        <div class="price-card">
+          <h3>CaliberHTTP Free</h3>
+          <div class="price-tag">$0 <span style="font-size:1rem;font-weight:500;color:var(--muted)">Forever</span></div>
+          <div class="price-sub">No account. No sign-in. Unlimited local collections.</div>
+          <ul class="price-list">
+            <li>✓ Unlimited <code>.http</code> / <code>.rest</code> collections</li>
+            <li>✓ Full Visual Request Studio + Two-Way Sync</li>
+            <li>✓ Unlimited <code>caliber.env.json</code> &amp; <code>.env</code> environments</li>
+            <li>✓ HTTP/REST + GraphQL-over-HTTP</li>
+            <li>✓ Last 100 local runs history + cURL import/export</li>
+          </ul>
+          <a class="btn btn-secondary" href="https://marketplace.visualstudio.com/items?itemName=caliberhttp.caliberhttp" target="_blank" rel="noopener">Install Free Extension</a>
+        </div>
+
+        <div class="price-card featured">
+          <h3>CaliberHTTP Pro</h3>
+          <div class="price-tag">$19 <span style="font-size:1rem;font-weight:500;color:var(--muted)">Early Bird · $24 Standard One-Time (or $5/mo)</span></div>
+          <div class="price-sub">Perpetual v1.x license · Up to 3 machines · 14-day offline grace</div>
+          <ul class="price-list">
+            <li>✓ Everything in Free Forever</li>
+            <li>✓ Multi-Step Chaining &amp; <code>@assert</code> Test Runner (JUnit/MD)</li>
+            <li>✓ Response Snapshot Diff &amp; Schema Drift Detector</li>
+            <li>✓ Local <code>127.0.0.1</code> Mock Server (<code>.http</code> &amp; OpenAPI 3.x)</li>
+            <li>✓ HAR-to-<code>.http</code> Batch Importer &amp; AES-256-GCM Secret Vault</li>
+          </ul>
+          <div class="cta-row" style="margin-bottom:0">
+            <a class="btn btn-primary" href="https://buy.polar.sh/polar_cl_npSDaxVmLTXH6L1DLkqhgS5PR8ASl9JpLa4u93CrKhy" target="_blank" rel="noopener">Get Pro ($19 Early Bird)</a>
+            <a class="btn btn-secondary" href="https://polar.sh/caliberhttp/checkout/monthly" target="_blank" rel="noopener">$5/mo Option</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>Free ($0 Forever)</th>
+              <th>Pro ($19 Early Bird / $24 One-Time / $5/mo)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Local <code>.http</code> / <code>.rest</code> Collections &amp; Visual Studio</td><td>Unlimited</td><td>Unlimited</td></tr>
+            <tr><td>Two-Way Sync, CodeLens &amp; GraphQL-over-HTTP</td><td>Full</td><td>Full</td></tr>
+            <tr><td>Local Environments (<code>caliber.env.json</code>, <code>.env</code>, <code>{{$uuid}}</code>)</td><td>Unlimited</td><td>Unlimited</td></tr>
+            <tr><td>Response Inspector, 100-Run History &amp; cURL Codec</td><td>Full</td><td>Full</td></tr>
+            <tr><td>Multi-Step Request Chaining &amp; <code>@assert</code> Runner</td><td>—</td><td>Included (JUnit / MD / JSON)</td></tr>
+            <tr><td>Schema Drift Detector &amp; Local <code>127.0.0.1</code> Mock Server</td><td>—</td><td>Included</td></tr>
+            <tr><td>HAR Batch Importer &amp; AES-256-GCM Local Secret Vault</td><td>—</td><td>Included</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="privacy-box">
+        <h2 style="margin-top:0">Privacy Promise: Zero Telemetry, 100% Local</h2>
+        <p style="margin-bottom:0;color:var(--muted)">CaliberHTTP collects <strong>zero analytics, zero telemetry, and zero crash reports</strong>. All collections, environments, request history, and encrypted secrets stay on your machine. Outbound network traffic occurs only when you send a request or optionally activate a Polar.sh Pro license key. <a href="privacy.html">Read full Privacy Policy →</a></p>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <div class="faq-list">
+        <details>
+          <summary>Do I need an account to use CaliberHTTP?</summary>
+          <p>No. Free features require zero sign-in and zero network access. Pro licenses use a Polar.sh license key stored locally in your OS Keychain via VS Code SecretStorage, with a 14-day offline grace period.</p>
+        </details>
+        <details>
+          <summary>Does it work with my existing REST Client .http files?</summary>
+          <p>Yes. CaliberHTTP parses standard <code>###</code> request separators, <code>@var</code> definitions, <code>@name</code> references, and <code>.env</code> / <code>caliber.env.json</code> environments.</p>
+        </details>
+        <details>
+          <summary>Can I use CaliberHTTP in Cursor, Windsurf, or VSCodium?</summary>
+          <p>Yes. CaliberHTTP is published to both the VS Code Marketplace and the Open VSX Registry, so it installs natively in VS Code, Cursor, Windsurf, VSCodium, and Trae.</p>
+        </details>
+        <details>
+          <summary>What happens if my internet drops while using Pro?</summary>
+          <p>CaliberHTTP caches your license validation locally for 72 hours and provides a 14-day offline grace window so you are never locked out on flights, VPNs, or air-gapped networks.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2026 CaliberHTTP · 100% Local-First API Studio</span>
+      <div class="footer-links">
+        <a href="docs.html">Documentation</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>

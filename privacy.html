@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — CaliberHTTP</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">⚡ CaliberHTTP</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="docs.html">Docs</a>
+        <a href="terms.html">Terms</a>
+        <button id="theme-toggle" class="theme-btn" type="button">Light Mode</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container prose">
+    <h1>Privacy Policy</h1>
+    <p><strong>Effective Date:</strong> November 27, 2026</p>
+    <p>CaliberHTTP is built on a strict <strong>zero-telemetry, 100% local-first</strong> architecture.</p>
+
+    <h2>1. Zero Telemetry &amp; Zero Analytics</h2>
+    <p>The CaliberHTTP extension does <strong>not</strong> collect, log, or transmit usage analytics, crash reports, IP addresses, request payloads, response bodies, or workspace file names to our servers or any third-party analytics service.</p>
+
+    <h2>2. Local-Only Data Storage</h2>
+    <ul>
+      <li><strong>Collections &amp; Environments:</strong> Stored as plain-text <code>.http</code>, <code>.rest</code>, <code>caliber.env.json</code>, and <code>.env</code> files directly in your local workspace.</li>
+      <li><strong>Request History &amp; Snapshots:</strong> Stored locally on your machine inside your workspace/VS Code storage.</li>
+      <li><strong>Encrypted Secrets:</strong> Optional AES-256-GCM vault files (<code>.caliber/vault.enc</code>) are encrypted locally on your device.</li>
+      <li><strong>License Key:</strong> If you activate Pro, your Polar.sh license key is stored in VS Code's OS-Keychain-backed <code>SecretStorage</code>.</li>
+    </ul>
+
+    <h2>3. Outbound Network Requests</h2>
+    <p>CaliberHTTP makes <strong>zero background network requests</strong>. Outbound network connections occur strictly in two cases:</p>
+    <ol>
+      <li><strong>User-Initiated HTTP Requests:</strong> Requests you explicitly trigger in the editor or Studio are sent directly from your machine to the target URL you specified.</li>
+      <li><strong>Optional Pro License Validation:</strong> When you activate, validate (every 72 hours if online), or deactivate a Pro license key, CaliberHTTP communicates with Polar.sh (<code>https://api.polar.sh/v1/customer-portal/license-keys/*</code>) sending only your license key, organization ID, and device hostname label.</li>
+    </ol>
+
+    <h2>4. Website &amp; Payments</h2>
+    <p>This static website is hosted on GitHub Pages with zero tracking cookies. Optional Pro purchases are processed by <strong>Polar.sh</strong> as Merchant of Record under Polar.sh's privacy policy.</p>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2026 CaliberHTTP</span>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="docs.html">Docs</a>
+        <a href="terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
