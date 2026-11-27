@@ -1,0 +1,22 @@
+CaliberHTTP Software License
+
+Copyright (c) 2026 CaliberHTTP
+
+1. Core Edition (Free):
+   Permission is hereby granted, free of charge, to any person obtaining a copy of
+   CaliberHTTP to install and use the Free features locally for personal or commercial
+   software development.
+
+2. Pro Edition:
+   Pro features (Multi-Step Request Chaining & Assertions, Schema Drift Detector,
+   Local Mock Server, HAR Batch Importer, and AES-256-GCM Secret Vault) require a
+   valid CaliberHTTP Pro license key issued via Polar.sh.
+
+3. Disclaimer:
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.

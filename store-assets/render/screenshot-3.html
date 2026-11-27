@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 1280px;
+    height: 800px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #14171F;
+    color: #E2E8F0;
+    overflow: hidden;
+  }
+  .shell {
+    display: grid;
+    grid-template-rows: 58px 1fr 28px;
+    height: 800px;
+  }
+  .mockbar {
+    background: #0F172A;
+    border-bottom: 1px solid #334155;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mock-left { display: flex; align-items: center; gap: 14px; }
+  .live-dot {
+    width: 10px; height: 10px; border-radius: 50%; background: #10B981;
+    box-shadow: 0 0 10px #10B981;
+  }
+  .mock-url {
+    font-family: ui-monospace, monospace;
+    background: #1E293B;
+    border: 1px solid #334155;
+    padding: 5px 12px;
+    border-radius: 6px;
+    color: #38BDF8;
+    font-size: 13px;
+  }
+  .pro-tag {
+    background: linear-gradient(90deg, #38BDF8, #10B981);
+    color: #0F172A;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .split {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 20px;
+    padding: 22px 24px;
+  }
+  .panel {
+    background: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .panel-hdr {
+    padding: 14px 18px;
+    background: #243247;
+    border-bottom: 1px solid #334155;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .drift-list { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .drift-item {
+    background: #0F172A;
+    border-radius: 8px;
+    padding: 14px 16px;
+    border-left: 4px solid #EF4444;
+  }
+  .drift-item.warn { border-left-color: #F59E0B; }
+  .drift-item.info { border-left-color: #38BDF8; }
+  .drift-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-family: ui-monospace, monospace;
+    font-size: 13px;
+  }
+  .sev {
+    font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px;
+    font-family: -apple-system, sans-serif;
+  }
+  .sev-break { background: rgba(239, 68, 68, 0.18); color: #FCA5A5; }
+  .sev-warn { background: rgba(245, 158, 11, 0.18); color: #FCD34D; }
+  .sev-info { background: rgba(56, 189, 248, 0.18); color: #7DD3FC; }
+  .diff-line { font-family: ui-monospace, monospace; font-size: 12.5px; color: #CBD5E1; line-height: 1.6; }
+
+  .routes { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .route-row {
+    background: #0F172A;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: ui-monospace, monospace;
+    font-size: 12.5px;
+  }
+  .log-box {
+    margin: 0 16px 16px;
+    background: #0B1020;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #94A3B8;
+  }
+  .statusbar {
+    background: #0F172A;
+    border-top: 1px solid #334155;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    font-size: 12px;
+    color: #94A3B8;
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="mockbar">
+    <div class="mock-left">
+      <span class="live-dot"></span>
+      <strong>Local Mock Server</strong>
+      <span class="pro-tag">PRO</span>
+      <span class="mock-url">http://127.0.0.1:4010</span>
+      <span style="font-size:12.5px;color:#94A3B8">Source: openapi.json + collections/users.http</span>
+    </div>
+    <div style="font-size:12.5px;color:#34D399;font-weight:600">● 4 Mock Routes Active · 0ms Cloud Latency</div>
+  </div>
+
+  <div class="split">
+    <div class="panel">
+      <div class="panel-hdr">
+        <span>Schema Drift Detector — GET /v1/users/42</span>
+        <span style="color:#FCA5A5;font-size:12.5px">2 Breaking · 1 Added</span>
+      </div>
+      <div class="drift-list">
+        <div class="drift-item">
+          <div class="drift-top">
+            <strong>$.data.user.id</strong>
+            <span class="sev sev-break">BREAKING · TYPE CHANGED</span>
+          </div>
+          <div class="diff-line">- Expected (Pinned Baseline): <span style="color:#34D399">number</span> (42)</div>
+          <div class="diff-line">+ Actual (Live Response): <span style="color:#FCA5A5">string</span> ("usr_42")</div>
+        </div>
+
+        <div class="drift-item">
+          <div class="drift-top">
+            <strong>$.data.user.legacyRole</strong>
+            <span class="sev sev-break">BREAKING · REMOVED FIELD</span>
+          </div>
+          <div class="diff-line">- Expected (Pinned Baseline): <span style="color:#34D399">string</span> ("member")</div>
+          <div class="diff-line">+ Actual (Live Response): <span style="color:#FCA5A5">missing</span></div>
+        </div>
+
+        <div class="drift-item warn">
+          <div class="drift-top">
+            <strong>$.meta.rateLimitRemaining</strong>
+            <span class="sev sev-warn">WARNING · TYPE CHANGED</span>
+          </div>
+          <div class="diff-line">- Expected: number &nbsp;|&nbsp; + Actual: null</div>
+        </div>
+
+        <div class="drift-item info">
+          <div class="drift-top">
+            <strong>$.data.user.mfaEnabled</strong>
+            <span class="sev sev-info">INFO · ADDED FIELD</span>
+          </div>
+          <div class="diff-line">+ New field detected: <span style="color:#7DD3FC">boolean</span> (true)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-hdr">
+        <span>127.0.0.1 Mock Routes &amp; Live Log</span>
+        <span style="color:#94A3B8;font-size:12px">node:http local</span>
+      </div>
+      <div class="routes">
+        <div class="route-row">
+          <span><strong style="color:#34D399">GET</strong> &nbsp;/v1/users/:id</span>
+          <span style="color:#94A3B8">200 JSON</span>
+        </div>
+        <div class="route-row">
+          <span><strong style="color:#38BDF8">POST</strong> /v1/auth/login</span>
+          <span style="color:#94A3B8">200 JSON</span>
+        </div>
+        <div class="route-row">
+          <span><strong style="color:#FBBF24">PUT</strong> &nbsp;/v1/orders/:id</span>
+          <span style="color:#94A3B8">200 JSON</span>
+        </div>
+        <div class="route-row">
+          <span><strong style="color:#F87171">DEL</strong> &nbsp;/v1/orders/:id</span>
+          <span style="color:#94A3B8">204 Empty</span>
+        </div>
+      </div>
+      <div class="log-box">
+        <div><span style="color:#34D399">[04:39:11]</span> GET /v1/users/42 → 200 (1ms)</div>
+        <div><span style="color:#34D399">[04:39:14]</span> POST /v1/auth/login → 200 (2ms)</div>
+        <div><span style="color:#38BDF8">[04:39:18]</span> Schema baseline compared: 2 breaking</div>
+        <div><span style="color:#34D399">[04:39:21]</span> DEL /v1/orders/99 → 204 (1ms)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="statusbar">
+    <span>CaliberHTTP Pro · Local Schema Snapshot + 127.0.0.1 Mock Server</span>
+    <span>100% Offline Capable</span>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,258 @@
+{
+  "name": "caliberhttp",
+  "displayName": "CaliberHTTP — Git-Native .http Studio & API Runner",
+  "description": "Git-native .http studio & local API runner for VS Code. Visual Request Builder, two-way .http sync, GraphQL, chaining, schema drift & localhost mock server. Zero login. Zero cloud lock-in.",
+  "version": "1.0.0",
+  "publisher": "caliberhttp",
+  "license": "SEE LICENSE IN LICENSE",
+  "icon": "media/icon.png",
+  "homepage": "https://imgolamrabbani.github.io/caliberhttp/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/imgolamrabbani/caliberhttp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/imgolamrabbani/caliberhttp/issues"
+  },
+  "qna": "https://github.com/imgolamrabbani/caliberhttp/discussions",
+  "categories": [
+    "Testing",
+    "Other"
+  ],
+  "keywords": [
+    "http",
+    "rest",
+    "api client",
+    "graphql",
+    ".http",
+    "postman",
+    "thunder client",
+    "rest client",
+    "mock server",
+    "api testing"
+  ],
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "activationEvents": [
+    "onLanguage:http",
+    "onView:caliberhttp.collections",
+    "onCommand:caliberhttp.openStudio",
+    "onCommand:caliberhttp.createStarterCollection"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "http",
+        "aliases": [
+          "HTTP",
+          "http",
+          "REST"
+        ],
+        "extensions": [
+          ".http",
+          ".rest"
+        ]
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "caliberhttp",
+          "title": "CaliberHTTP",
+          "icon": "media/activitybar.svg"
+        }
+      ]
+    },
+    "views": {
+      "caliberhttp": [
+        {
+          "id": "caliberhttp.collections",
+          "name": "Collections & Requests"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "caliberhttp.collections",
+        "contents": "No `.http` or `.rest` files found in this workspace.\n[Create Starter Collection (api.http)](command:caliberhttp.createStarterCollection)\n[Import cURL / HAR](command:caliberhttp.importCurl)\n[Open CaliberHTTP Studio](command:caliberhttp.openStudio)"
+      }
+    ],
+    "commands": [
+      {
+        "command": "caliberhttp.openStudio",
+        "title": "Open Studio",
+        "category": "CaliberHTTP",
+        "icon": "$(rocket)"
+      },
+      {
+        "command": "caliberhttp.sendRequest",
+        "title": "Send Request",
+        "category": "CaliberHTTP",
+        "icon": "$(play)"
+      },
+      {
+        "command": "caliberhttp.createStarterCollection",
+        "title": "Create Starter Collection (api.http)",
+        "category": "CaliberHTTP",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "caliberhttp.refreshCollections",
+        "title": "Refresh Collections",
+        "category": "CaliberHTTP",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "caliberhttp.importCurl",
+        "title": "Import cURL Command",
+        "category": "CaliberHTTP"
+      },
+      {
+        "command": "caliberhttp.exportCurl",
+        "title": "Copy Request as cURL",
+        "category": "CaliberHTTP"
+      },
+      {
+        "command": "caliberhttp.runChain",
+        "title": "Run Multi-Step Chain (Pro)",
+        "category": "CaliberHTTP",
+        "icon": "$(run-all)"
+      },
+      {
+        "command": "caliberhttp.captureSnapshot",
+        "title": "Capture Schema Baseline Snapshot (Pro)",
+        "category": "CaliberHTTP"
+      },
+      {
+        "command": "caliberhttp.diffSchemaDrift",
+        "title": "Diff Schema Drift Against Baseline (Pro)",
+        "category": "CaliberHTTP"
+      },
+      {
+        "command": "caliberhttp.startMockServer",
+        "title": "Start Local Mock Server (Pro)",
+        "category": "CaliberHTTP"
+      },
+      {
+        "command": "caliberhttp.stopMockServer",
+        "title": "Stop Local Mock Server (Pro)",
+        "category": "CaliberHTTP"
+      },
+      {
+        "command": "caliberhttp.importHar",
+        "title": "Import HAR to .http Collection (Pro)",
+        "category": "CaliberHTTP"
+      },
+      {
+        "command": "caliberhttp.manageSecretVault",
+        "title": "Manage Local Secret Vault (Pro)",
+        "category": "CaliberHTTP"
+      },
+      {
+        "command": "caliberhttp.activateLicense",
+        "title": "Activate Pro License",
+        "category": "CaliberHTTP"
+      },
+      {
+        "command": "caliberhttp.deactivateLicense",
+        "title": "Deactivate Pro License",
+        "category": "CaliberHTTP"
+      },
+      {
+        "command": "caliberhttp.licenseStatus",
+        "title": "License Status",
+        "category": "CaliberHTTP"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "caliberhttp.openStudio",
+          "when": "view == caliberhttp.collections",
+          "group": "navigation"
+        },
+        {
+          "command": "caliberhttp.createStarterCollection",
+          "when": "view == caliberhttp.collections",
+          "group": "navigation"
+        },
+        {
+          "command": "caliberhttp.refreshCollections",
+          "when": "view == caliberhttp.collections",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "caliberhttp.sendRequest",
+          "when": "view == caliberhttp.collections && viewItem == request",
+          "group": "inline"
+        },
+        {
+          "command": "caliberhttp.openStudio",
+          "when": "view == caliberhttp.collections && viewItem == request",
+          "group": "inline"
+        },
+        {
+          "command": "caliberhttp.runChain",
+          "when": "view == caliberhttp.collections && viewItem == file",
+          "group": "inline"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "CaliberHTTP",
+      "properties": {
+        "caliberhttp.defaultTimeoutMs": {
+          "type": "number",
+          "default": 30000,
+          "description": "Default HTTP request timeout in milliseconds."
+        },
+        "caliberhttp.followRedirects": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically follow HTTP 3xx redirects."
+        },
+        "caliberhttp.mockServerPort": {
+          "type": "number",
+          "default": 4010,
+          "description": "Default localhost port for CaliberHTTP Pro Mock Server."
+        },
+        "caliberhttp.polarOrganizationId": {
+          "type": "string",
+          "default": "c9b3a57f-c07f-4f81-b9b8-aa9f5b497a1e",
+          "description": "Polar.sh Organization ID used for optional Pro license key validation."
+        },
+        "caliberhttp.polarCheckoutUrl": {
+          "type": "string",
+          "default": "https://buy.polar.sh/polar_cl_npSDaxVmLTXH6L1DLkqhgS5PR8ASl9JpLa4u93CrKhy",
+          "description": "Checkout URL opened when upgrading to CaliberHTTP Pro."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit && tsc -p webview/tsconfig.json --noEmit",
+    "build:ext": "node esbuild.config.mjs",
+    "build:webview": "vite build --config webview/vite.config.ts",
+    "build": "npm run build:ext && npm run build:webview",
+    "test": "vitest run",
+    "package": "vsce package --no-dependencies -o ../dist-packages/caliberhttp-1.0.0.vsix"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/vscode": "^1.90.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@vscode/vsce": "^3.3.2",
+    "esbuild": "^0.25.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0",
+    "vitest": "^3.0.5"
+  }
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 256px;
+    height: 256px;
+    background: transparent;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  svg {
+    width: 256px;
+    height: 256px;
+    display: block;
+  }
+</style>
+</head>
+<body>
+  <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#0F172A" />
+        <stop offset="100%" stop-color="#1E1B4B" />
+      </linearGradient>
+      <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#22D3EE" />
+        <stop offset="100%" stop-color="#10B981" />
+      </linearGradient>
+      <linearGradient id="strokeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#34D399" stop-opacity="0.2" />
+      </linearGradient>
+    </defs>
+    <!-- Rounded squircle container -->
+    <rect x="10" y="10" width="236" height="236" rx="54" fill="url(#bg)" stroke="url(#strokeGrad)" stroke-width="4" />
+    <!-- Outer precision crosshair ring -->
+    <circle cx="128" cy="128" r="76" fill="none" stroke="#334155" stroke-width="6" />
+    <!-- Precision tick marks (N, S, E, W) -->
+    <line x1="128" y1="36" x2="128" y2="60" stroke="#22D3EE" stroke-width="10" stroke-linecap="round" />
+    <line x1="128" y1="196" x2="128" y2="220" stroke="#10B981" stroke-width="10" stroke-linecap="round" />
+    <line x1="36" y1="128" x2="60" y2="128" stroke="#38BDF8" stroke-width="10" stroke-linecap="round" />
+    <line x1="196" y1="128" x2="220" y2="128" stroke="#34D399" stroke-width="10" stroke-linecap="round" />
+    <!-- Bold central HTTP forward bolt / chevron -->
+    <path d="M96 86 L154 128 L96 170" fill="none" stroke="url(#accent)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Precision target dot -->
+    <circle cx="166" cy="128" r="13" fill="#34D399" />
+  </svg>
+</body>
+</html>

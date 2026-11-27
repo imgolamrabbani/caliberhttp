@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 1280px;
+    height: 640px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+    background: radial-gradient(circle at 18% 20%, #172554 0%, #0B1020 52%, #060913 100%);
+    color: #F8FAFC;
+    overflow: hidden;
+    position: relative;
+  }
+  .grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(56, 189, 248, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56, 189, 248, 0.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .wrap {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 64px 72px;
+    gap: 48px;
+  }
+  .left {
+    max-width: 630px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .brand-name {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #F8FAFC;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(16, 185, 129, 0.14);
+    border: 1px solid rgba(52, 211, 153, 0.35);
+    color: #6EE7B7;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: 46px;
+    line-height: 1.12;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 18px;
+  }
+  h1 span {
+    background: linear-gradient(90deg, #38BDF8, #34D399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  p.sub {
+    font-size: 20px;
+    line-height: 1.5;
+    color: #94A3B8;
+    margin-bottom: 28px;
+  }
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .pill {
+    background: rgba(30, 41, 59, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    color: #E2E8F0;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 8px;
+  }
+  .card {
+    width: 470px;
+    background: #0F172A;
+    border: 1px solid rgba(56, 189, 248, 0.28);
+    border-radius: 16px;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.65);
+    overflow: hidden;
+  }
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background: #1E293B;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+    font-size: 13px;
+    color: #94A3B8;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .dots { display: flex; gap: 7px; }
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .status-ok {
+    background: rgba(16, 185, 129, 0.18);
+    color: #34D399;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .code {
+    padding: 22px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #E2E8F0;
+  }
+  .c-comment { color: #64748B; }
+  .c-name { color: #38BDF8; font-weight: 700; }
+  .c-method { color: #34D399; font-weight: 700; }
+  .c-var { color: #FBBF24; }
+  .c-assert { color: #A78BFA; }
+  .card-foot {
+    padding: 12px 22px;
+    background: rgba(15, 23, 42, 0.9);
+    border-top: 1px solid rgba(148, 163, 184, 0.14);
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #94A3B8;
+  }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="wrap">
+    <div class="left">
+      <div class="brand">
+        <svg width="52" height="52" viewBox="0 0 256 256">
+          <defs>
+            <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0F172A" />
+              <stop offset="100%" stop-color="#1E1B4B" />
+            </linearGradient>
+            <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#22D3EE" />
+              <stop offset="100%" stop-color="#10B981" />
+            </linearGradient>
+          </defs>
+          <rect x="10" y="10" width="236" height="236" rx="54" fill="url(#bg)" stroke="#38BDF8" stroke-opacity="0.45" stroke-width="4" />
+          <circle cx="128" cy="128" r="76" fill="none" stroke="#334155" stroke-width="6" />
+          <path d="M96 86 L154 128 L96 170" fill="none" stroke="url(#accent)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="166" cy="128" r="13" fill="#34D399" />
+        </svg>
+        <span class="brand-name">CaliberHTTP</span>
+      </div>
+      <div class="badge">● ZERO LOGIN · ZERO TELEMETRY · 100% LOCAL</div>
+      <h1>Git-Native <span>.http Studio</span> &amp; Local API Runner</h1>
+      <p class="sub">Two-way Visual GUI + plain-text <code>.http</code> files inside VS Code, Cursor &amp; Windsurf. No cloud lock-in. Core free forever.</p>
+      <div class="pills">
+        <span class="pill">Two-Way .http Sync</span>
+        <span class="pill">Request Chaining</span>
+        <span class="pill">Schema Drift Diff</span>
+        <span class="pill">Local 127.0.0.1 Mock</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-top">
+        <div class="dots">
+          <span class="dot" style="background:#EF4444"></span>
+          <span class="dot" style="background:#F59E0B"></span>
+          <span class="dot" style="background:#10B981"></span>
+        </div>
+        <span>collections/auth.http</span>
+        <span class="status-ok">200 OK · 18ms</span>
+      </div>
+      <div class="code">
+        <div class="c-comment">### Authenticate &amp; Capture Token</div>
+        <div><span class="c-name">@name</span> login</div>
+        <div><span class="c-method">POST</span> <span class="c-var">{{baseUrl}}</span>/v1/auth/login</div>
+        <div>Content-Type: application/json</div>
+        <br />
+        <div>{"email": "<span class="c-var">{{userEmail}}</span>", "role": "admin"}</div>
+        <br />
+        <div><span class="c-assert">@assert</span> status == 200</div>
+        <div><span class="c-assert">@assert</span> body.$.token exists</div>
+        <div><span class="c-assert">@assert</span> latency &lt; 200</div>
+      </div>
+      <div class="card-foot">
+        <span>✓ 3/3 Assertions Passed</span>
+        <span>Git-Ready Plain Text</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

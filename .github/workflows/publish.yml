@@ -1,0 +1,111 @@
+name: Build, Test & Publish CaliberHTTP
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Typecheck, Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install dependencies
+        working-directory: app
+        run: npm ci
+
+      - name: Typecheck extension & webview
+        working-directory: app
+        run: npm run typecheck
+
+      - name: Build extension host & webview studio
+        working-directory: app
+        run: npm run build
+
+      - name: Run Vitest unit & integration suite
+        working-directory: app
+        run: npm test
+
+      - name: Package .vsix
+        working-directory: app
+        run: |
+          mkdir -p ../dist-packages
+          npm run package
+
+      - name: Upload packaged VSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: caliberhttp-vsix
+          path: dist-packages/*.vsix
+
+  publish-vscode-marketplace:
+    name: Publish to VS Code Marketplace (OIDC Trusted Publishing)
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Download VSIX artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: caliberhttp-vsix
+          path: dist-packages
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # 2026 Standard: Microsoft Entra ID / GitHub OIDC Trusted Publishing
+      # (Replaces legacy Azure DevOps global PATs retiring December 1, 2026)
+      - name: Azure Login via OIDC
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Publish VSIX to Visual Studio Code Marketplace
+        run: |
+          VSIX_FILE=$(ls dist-packages/*.vsix | head -n 1)
+          npx --yes @vscode/vsce publish --azure-credential --packagePath "$VSIX_FILE"
+
+  publish-open-vsx:
+    name: Publish to Open VSX Registry (Cursor / Windsurf / VSCodium)
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Download VSIX artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: caliberhttp-vsix
+          path: dist-packages
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Publish VSIX to Open VSX Registry
+        env:
+          OVSX_PAT: ${{ secrets.OPEN_VSX_TOKEN }}
+        run: |
+          VSIX_FILE=$(ls dist-packages/*.vsix | head -n 1)
+          npx --yes ovsx publish "$VSIX_FILE" -p "$OVSX_PAT"

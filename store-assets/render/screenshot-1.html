@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 1280px;
+    height: 800px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #1E1E1E;
+    color: #CCCCCC;
+    overflow: hidden;
+  }
+  .vscode {
+    display: grid;
+    grid-template-rows: 32px 1fr 24px;
+    height: 800px;
+  }
+  .titlebar {
+    background: #323233;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    font-size: 12px;
+    color: #CCCCCC;
+    border-bottom: 1px solid #252526;
+  }
+  .mac-dots { display: flex; gap: 7px; }
+  .mac-dot { width: 11px; height: 11px; border-radius: 50%; }
+  .main {
+    display: grid;
+    grid-template-columns: 48px 236px 1fr 1.15fr;
+    height: 100%;
+    overflow: hidden;
+  }
+  .activity {
+    background: #333333;
+    border-right: 1px solid #252526;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 12px;
+    gap: 18px;
+  }
+  .act-icon {
+    width: 34px; height: 34px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    color: #858585; font-size: 16px;
+  }
+  .act-icon.active {
+    color: #FFFFFF;
+    border-left: 2px solid #38BDF8;
+    background: rgba(56, 189, 248, 0.12);
+  }
+  .sidebar {
+    background: #252526;
+    border-right: 1px solid #1B1B1C;
+    padding: 12px 10px;
+    font-size: 12.5px;
+  }
+  .side-hdr {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #9CDCFE;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .env-pill {
+    background: #0E639C;
+    color: #fff;
+    font-size: 10.5px;
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+  .tree-group { margin-bottom: 10px; }
+  .tree-folder { font-weight: 600; color: #E2E8F0; padding: 4px 6px; }
+  .tree-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 5px 8px 5px 16px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #CCCCCC;
+  }
+  .tree-item.active { background: #37373D; color: #FFFFFF; }
+  .m { font-family: ui-monospace, monospace; font-size: 10px; font-weight: 700; width: 34px; }
+  .m-post { color: #38BDF8; }
+  .m-get { color: #34D399; }
+  .m-put { color: #FBBF24; }
+  .m-del { color: #F87171; }
+
+  .editor-pane {
+    background: #1E1E1E;
+    border-right: 1px solid #2D2D30;
+    display: flex;
+    flex-direction: column;
+  }
+  .tabs {
+    background: #252526;
+    display: flex;
+    height: 35px;
+    border-bottom: 1px solid #1E1E1E;
+  }
+  .tab {
+    padding: 8px 16px;
+    font-size: 12.5px;
+    background: #1E1E1E;
+    color: #FFFFFF;
+    border-top: 2px solid #38BDF8;
+    border-right: 1px solid #252526;
+  }
+  .code-area {
+    padding: 16px 20px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .codelens {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 11.5px;
+    color: #38BDF8;
+    margin-bottom: 2px;
+    opacity: 0.92;
+  }
+  .c-cmt { color: #6A9955; }
+  .c-dir { color: #C586C0; }
+  .c-kw { color: #569CD6; font-weight: 700; }
+  .c-var { color: #DCDCAA; }
+  .c-str { color: #CE9178; }
+  .c-key { color: #9CDCFE; }
+
+  .studio-pane {
+    background: #18181B;
+    display: flex;
+    flex-direction: column;
+  }
+  .studio-top {
+    padding: 10px 16px;
+    background: #252526;
+    border-bottom: 1px solid #2D2D30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+  .sync-badge {
+    background: rgba(16, 185, 129, 0.16);
+    color: #34D399;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .req-bar {
+    display: flex;
+    gap: 8px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #27272A;
+  }
+  .method-box {
+    background: #0F172A;
+    border: 1px solid #38BDF8;
+    color: #38BDF8;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .url-box {
+    flex: 1;
+    background: #1E1E1E;
+    border: 1px solid #3F3F46;
+    color: #F4F4F5;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: ui-monospace, monospace;
+    font-size: 13px;
+  }
+  .send-btn {
+    background: #0E639C;
+    color: #FFFFFF;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .subtabs {
+    display: flex;
+    gap: 18px;
+    padding: 0 16px;
+    border-bottom: 1px solid #27272A;
+    font-size: 12px;
+    color: #A1A1AA;
+  }
+  .subtab { padding: 10px 0; }
+  .subtab.active { color: #FFFFFF; border-bottom: 2px solid #38BDF8; font-weight: 600; }
+  .kv-table {
+    padding: 12px 16px;
+    border-bottom: 1px solid #27272A;
+    font-size: 12px;
+  }
+  .kv-row {
+    display: grid;
+    grid-template-columns: 24px 1fr 1.4fr;
+    gap: 8px;
+    padding: 6px 8px;
+    background: #202024;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    font-family: ui-monospace, monospace;
+  }
+  .resp-hdr {
+    padding: 10px 16px;
+    background: #1F2937;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+  }
+  .badge-200 {
+    background: #065F46;
+    color: #6EE7B7;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-weight: 700;
+  }
+  .resp-body {
+    padding: 14px 16px;
+    font-family: ui-monospace, monospace;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #E2E8F0;
+  }
+  .statusbar {
+    background: #007ACC;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 14px;
+    font-size: 11.5px;
+  }
+</style>
+</head>
+<body>
+<div class="vscode">
+  <div class="titlebar">
+    <div class="mac-dots">
+      <span class="mac-dot" style="background:#FF5F56"></span>
+      <span class="mac-dot" style="background:#FFBD2E"></span>
+      <span class="mac-dot" style="background:#27C93F"></span>
+    </div>
+    <span>auth.http — zero-dollar-api — CaliberHTTP Studio</span>
+    <span style="color:#34D399">● 100% Local · Zero Login</span>
+  </div>
+
+  <div class="main">
+    <div class="activity">
+      <div class="act-icon">📁</div>
+      <div class="act-icon">🔍</div>
+      <div class="act-icon active">⚡</div>
+      <div class="act-icon">⚙️</div>
+    </div>
+
+    <div class="sidebar">
+      <div class="side-hdr">
+        <span>CALIBERHTTP</span>
+        <span class="env-pill">Env: staging</span>
+      </div>
+      <div class="tree-group">
+        <div class="tree-folder">▾ collections/auth.http</div>
+        <div class="tree-item active"><span class="m m-post">POST</span> Login User</div>
+        <div class="tree-item"><span class="m m-get">GET</span> Current Profile</div>
+        <div class="tree-item"><span class="m m-post">POST</span> Refresh Token</div>
+      </div>
+      <div class="tree-group">
+        <div class="tree-folder">▾ collections/projects.http</div>
+        <div class="tree-item"><span class="m m-get">GET</span> List Projects</div>
+        <div class="tree-item"><span class="m m-post">POST</span> Create Project</div>
+        <div class="tree-item"><span class="m m-put">PUT</span> Update Quota</div>
+        <div class="tree-item"><span class="m m-del">DEL</span> Archive Project</div>
+      </div>
+      <div class="tree-group">
+        <div class="tree-folder">▾ Environments</div>
+        <div class="tree-item">caliber.env.json (dev, staging)</div>
+        <div class="tree-item">.env (local overrides)</div>
+      </div>
+    </div>
+
+    <div class="editor-pane">
+      <div class="tabs">
+        <div class="tab">collections/auth.http</div>
+      </div>
+      <div class="code-area">
+        <div class="codelens">▶ Send Request | ◫ Open in Studio | ▶ Run Chain (3 steps)</div>
+        <div class="c-cmt">### Login User</div>
+        <div><span class="c-dir">@name</span> login</div>
+        <div><span class="c-kw">POST</span> <span class="c-var">{{baseUrl}}</span>/v1/auth/login</div>
+        <div><span class="c-key">Content-Type:</span> application/json</div>
+        <div><span class="c-key">X-Request-Id:</span> <span class="c-var">{{$uuid}}</span></div>
+        <br />
+        <div>{</div>
+        <div>&nbsp;&nbsp;<span class="c-key">"email"</span>: <span class="c-str">"{{userEmail}}"</span>,</div>
+        <div>&nbsp;&nbsp;<span class="c-key">"workspace"</span>: <span class="c-str">"core-api"</span></div>
+        <div>}</div>
+        <br />
+        <div><span class="c-dir">@assert</span> status == 200</div>
+        <div><span class="c-dir">@assert</span> latency &lt; 250</div>
+        <div><span class="c-dir">@assert</span> body.$.token exists</div>
+        <br />
+        <div class="codelens">▶ Send Request | ◫ Open in Studio</div>
+        <div class="c-cmt">### Current Profile</div>
+        <div><span class="c-kw">GET</span> <span class="c-var">{{baseUrl}}</span>/v1/me</div>
+        <div><span class="c-key">Authorization:</span> Bearer <span class="c-var">{{login.response.body.$.token}}</span></div>
+      </div>
+    </div>
+
+    <div class="studio-pane">
+      <div class="studio-top">
+        <span>Visual Studio: Login User</span>
+        <span class="sync-badge">⇄ Two-Way Synced with auth.http</span>
+      </div>
+      <div class="req-bar">
+        <div class="method-box">POST</div>
+        <div class="url-box">{{baseUrl}}/v1/auth/login</div>
+        <div class="send-btn">Send ⌘↵</div>
+      </div>
+      <div class="subtabs">
+        <div class="subtab">Params</div>
+        <div class="subtab active">Headers (2)</div>
+        <div class="subtab">Auth</div>
+        <div class="subtab">Body (JSON)</div>
+        <div class="subtab">Assertions (3)</div>
+      </div>
+      <div class="kv-table">
+        <div class="kv-row"><span>☑</span><span>Content-Type</span><span>application/json</span></div>
+        <div class="kv-row"><span>☑</span><span>X-Request-Id</span><span style="color:#FBBF24">{{$uuid}}</span></div>
+      </div>
+      <div class="resp-hdr">
+        <div style="display:flex;gap:10px;align-items:center">
+          <span class="badge-200">200 OK</span>
+          <span>24 ms</span>
+          <span>1.42 KB</span>
+        </div>
+        <span style="color:#34D399">✓ 3/3 Assertions Passed</span>
+      </div>
+      <div class="resp-body">
+        <div>{</div>
+        <div>&nbsp;&nbsp;<span class="c-key">"ok"</span>: <span style="color:#569CD6">true</span>,</div>
+        <div>&nbsp;&nbsp;<span class="c-key">"token"</span>: <span class="c-str">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span>,</div>
+        <div>&nbsp;&nbsp;<span class="c-key">"user"</span>: {</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-key">"id"</span>: <span style="color:#B5CEA8">4092</span>,</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-key">"email"</span>: <span class="c-str">"dev@caliberhttp.local"</span>,</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="c-key">"plan"</span>: <span class="c-str">"local-first"</span></div>
+        <div>&nbsp;&nbsp;}</div>
+        <div>}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="statusbar">
+    <span>CaliberHTTP: Ready (staging) · 2 collections</span>
+    <span>Zero Telemetry · Local Filesystem</span>
+  </div>
+</div>
+</body>
+</html>
