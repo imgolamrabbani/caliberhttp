@@ -330,27 +330,49 @@ function updateWebsiteDocs(rootDir, opts, extName, dryRun) {
     }
   }
 
-  if (opts.checkoutLifetime || opts.checkoutMonthly) {
-    const primaryUrl = opts.checkoutLifetime || opts.checkoutMonthly;
-    const safePrimary = escapeHtmlAttr(primaryUrl);
+  if (opts.checkoutLifetime) {
+    const safeLifetime = escapeHtmlAttr(opts.checkoutLifetime);
 
-    // Update existing Polar checkout anchor if already wired
+    // Update existing Polar lifetime checkout anchor if already wired
     let next = updated.replace(
       /(<a\b[^>]*\bdata-polar-checkout="primary"[^>]*\bhref=")([^"]+)(")/,
-      `$1${safePrimary}$3`
+      `$1${safeLifetime}$3`
     );
 
     // First-time wiring: link "Polar.sh" in Section 5 License Activation
     if (next === updated) {
       next = next.replace(
         /Purchase a Pro license via Polar\.sh/,
-        `Purchase a Pro license via <a data-polar-checkout="primary" href="${safePrimary}" target="_blank" rel="noopener">Polar.sh</a>`
+        `Purchase a Pro license via <a data-polar-checkout="primary" href="${safeLifetime}" target="_blank" rel="noopener">Polar.sh</a>`
       );
     }
 
     if (next !== updated) {
       updated = next;
-      changes.push(`Docs Polar.sh checkout link -> ${primaryUrl}`);
+      changes.push(`Docs Polar.sh lifetime checkout link -> ${opts.checkoutLifetime}`);
+    }
+  }
+
+  if (opts.checkoutMonthly) {
+    const safeMonthly = escapeHtmlAttr(opts.checkoutMonthly);
+
+    // Update existing Polar monthly checkout anchor if already wired
+    let next = updated.replace(
+      /(<a\b[^>]*\bdata-polar-checkout="monthly"[^>]*\bhref=")([^"]+)(")/,
+      `$1${safeMonthly}$3`
+    );
+
+    // First-time wiring: link "$5/mo" in Section 5 License Activation
+    if (next === updated) {
+      next = next.replace(
+        /\$5\/mo(?=\))/,
+        `<a data-polar-checkout="monthly" href="${safeMonthly}" target="_blank" rel="noopener">$5/mo</a>`
+      );
+    }
+
+    if (next !== updated) {
+      updated = next;
+      changes.push(`Docs Polar.sh monthly checkout link -> ${opts.checkoutMonthly}`);
     }
   }
 
