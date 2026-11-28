@@ -2,7 +2,7 @@
   "name": "caliberhttp",
   "displayName": "CaliberHTTP — Git-Native .http Studio & API Runner",
   "description": "Git-native .http studio & local API runner for VS Code. Visual Request Builder, two-way .http sync, GraphQL, chaining, schema drift & localhost mock server. Zero login. Zero cloud lock-in.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "caliberhttp",
   "license": "SEE LICENSE IN LICENSE",
   "icon": "media/icon.png",
@@ -107,6 +107,11 @@
       {
         "command": "caliberhttp.importCurl",
         "title": "Import cURL Command",
+        "category": "CaliberHTTP"
+      },
+      {
+        "command": "caliberhttp.importOpenApi",
+        "title": "Import OpenAPI 3.x JSON to .http",
         "category": "CaliberHTTP"
       },
       {
@@ -239,7 +244,7 @@
     "build:webview": "vite build --config webview/vite.config.ts",
     "build": "npm run build:ext && npm run build:webview",
     "test": "vitest run",
-    "package": "vsce package --no-dependencies -o ../dist-packages/caliberhttp-1.0.0.vsix"
+    "package": "vsce package --no-dependencies -o ../dist-packages/caliberhttp-1.1.0.vsix"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

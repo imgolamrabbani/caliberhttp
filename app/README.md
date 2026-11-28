@@ -19,7 +19,7 @@ CaliberHTTP combines the plain-text Git ergonomics of `.http` / `.rest` files wi
 | Visual Request Studio + Two-Way Sync + CodeLens | Included | Included |
 | HTTP/REST + GraphQL-over-HTTP | Included | Included |
 | Local Environments (`caliber.env.json`, `.env`, `{{$uuid}}`, `{{$timestamp}}`) | Included | Included |
-| Response Inspector, 100-Run History & cURL Import/Export | Included | Included |
+| Response Inspector, 100-Run History, cURL & OpenAPI 3.x JSON Importer | Included | Included |
 | Multi-Step Request Chaining, `@assert` & JUnit/Markdown/JSON Export | — | Included |
 | Response Snapshot Diff & Breaking Schema Drift Detector | — | Included |
 | Local `127.0.0.1` Mock Server (`.http` fixtures & OpenAPI 3.0/3.1 JSON) | — | Included |

@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { parseCurl, toCurl } from '../src/core/curlCodec';
+import { importOpenApiToHttp } from '../src/core/openapiImporter';
 import { HistoryStore } from '../src/core/historyStore';
 import { executeHttpRequest } from '../src/core/httpExecutor';
 import {
@@ -367,5 +368,87 @@ describe('Core: httpExecutor (real localhost HTTP server)', () => {
     );
     expect(res.status).toBe(0);
     expect(res.error).toBeTruthy();
+  });
+});
+
+describe('Core: openapiImporter (OpenAPI 3.0/3.1 JSON -> .http)', () => {
+  it('extracts servers, path/query params, bearer & API-key auth, $ref schemas, and generates valid .http', () => {
+    const spec = JSON.stringify({
+      openapi: '3.1.0',
+      info: { title: 'Payments API', version: '1.0.0' },
+      servers: [
+        {
+          url: 'https://{env}.payments.example.com/v1',
+          variables: { env: { default: 'sandbox' } },
+        },
+      ],
+      security: [{ bearerAuth: [] }],
+      components: {
+        securitySchemes: {
+          bearerAuth: { type: 'http', scheme: 'bearer' },
+          apiKeyAuth: { type: 'apiKey', name: 'X-Api-Key', in: 'header' },
+        },
+        schemas: {
+          CreateCharge: {
+            type: 'object',
+            properties: {
+              amount: { type: 'integer', example: 2500 },
+              currency: { type: 'string', enum: ['USD', 'EUR'] },
+              customerEmail: { type: 'string', format: 'email' },
+            },
+          },
+        },
+      },
+      paths: {
+        '/charges/{chargeId}': {
+          get: {
+            operationId: 'getCharge',
+            summary: 'Retrieve a charge',
+            parameters: [
+              { name: 'chargeId', in: 'path', required: true, example: 'ch_123' },
+              { name: 'expand', in: 'query', example: 'customer' },
+            ],
+          },
+        },
+        '/charges': {
+          post: {
+            operationId: 'createCharge',
+            summary: 'Create a charge',
+            security: [{ apiKeyAuth: [] }],
+            requestBody: {
+              content: {
+                'application/json': {
+                  schema: { $ref: '#/components/schemas/CreateCharge' },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const result = importOpenApiToHttp(spec);
+    expect(result.title).toBe('Payments API');
+    expect(result.baseUrl).toBe('https://sandbox.payments.example.com/v1');
+    expect(result.operationCount).toBe(2);
+    expect(result.httpContent).toContain('@baseUrl = https://sandbox.payments.example.com/v1');
+    expect(result.httpContent).toContain('GET {{baseUrl}}/charges/ch_123?expand=customer');
+    expect(result.httpContent).toContain('Authorization: Bearer {{bearerToken}}');
+    expect(result.httpContent).toContain('POST {{baseUrl}}/charges');
+    expect(result.httpContent).toContain('X-Api-Key: {{apiKey}}');
+    expect(result.httpContent).toContain('"amount": 2500');
+    expect(result.httpContent).toContain('"currency": "USD"');
+    expect(result.httpContent).toContain('"customerEmail": "user@example.com"');
+
+    // Ensure generated .http round-trips cleanly through parseHttpDocument
+    const reparsed = parseHttpDocument(result.httpContent, 'payments.http');
+    expect(reparsed.requests).toHaveLength(2);
+    expect(reparsed.requests[0].id).toBe('getCharge');
+    expect(reparsed.requests[1].id).toBe('createCharge');
+  });
+
+  it('rejects invalid JSON and OpenAPI documents missing paths', () => {
+    expect(() => importOpenApiToHttp('{not valid json')).toThrow(/Invalid OpenAPI JSON/);
+    expect(() => importOpenApiToHttp('{"openapi":"3.0.3"}')).toThrow(/missing top-level "paths"/);
   });
 });

@@ -108,3 +108,24 @@ Audited `docs/BILLING_SETUP.md`, `.env.example`, `docs/LAUNCH_PLAYBOOK.md`, `sto
 ## Final Gatekeeper Verdict
 
 **APPROVED FOR LAUNCH.** All 32 automated tests, strict TypeScript checks, production bundles, VSIX marketplace policy gates, Entra ID OIDC publishing configuration, PNG store assets, static storefront checks, and monetization documentation passed with **0 defects**.
+
+---
+
+## Cycle 9 Audit Addendum — CaliberHTTP `v1.1.0` (OpenAPI 3.0/3.1 JSON → `.http` Importer)
+
+**Date:** 2026-11-28  
+**Artifact Audited:** `dist-packages/caliberhttp-1.1.0.vsix`  
+**Verdict:** **PASS (0 Defects)**
+
+- **Typecheck & Automated Tests (`app/`):**
+  - `npm run typecheck` (`tsc --noEmit && tsc -p webview/tsconfig.json --noEmit`): **0 errors** (`strict: true`).
+  - `npm test` (Vitest v3.2.7): **3/3 test files passed, 34/34 tests passed** (`licensing.test.ts`: 16, `core.test.ts`: 13 including new OpenAPI 3.x importer suite, `pro.test.ts`: 5) in 422ms.
+  - Static scan on `app/src/core/openapiImporter.ts` and `app/src/extension.ts`: **0** stubs / `TODO:` / `FIXME:` / `console.log`.
+- **VSIX Package & Live Polar.sh Wiring (`dist-packages/caliberhttp-1.1.0.vsix`):**
+  - **Archive Size:** `142 KB` (12 files, 371,336 bytes uncompressed, `< 2 MB`).
+  - **Bundle Hygiene:** Zero `node_modules/`, zero `.map`, PNG-only extension icon (`media/icon.png`), zero `.svg` or `http://` in `extension/readme.md`.
+  - **Manifest Verification (`extension/package.json`):**
+    - `version`: `"1.1.0"`
+    - Command `caliberhttp.importOpenApi` registered
+    - Live Polar Org ID preserved: `c9b3a57f-c07f-4f81-b9b8-aa9f5b497a1e`
+    - Live Polar Checkout URL preserved: `https://buy.polar.sh/polar_cl_npSDaxVmLTXH6L1DLkqhgS5PR8ASl9JpLa4u93CrKhy`

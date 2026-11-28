@@ -2,6 +2,12 @@
 
 All notable changes to **CaliberHTTP** will be documented in this file.
 
+## [1.1.0] - 2026-11-28
+
+### Added
+- **OpenAPI 3.0 / 3.1 JSON to `.http` Collection Importer (Free):**
+  - New command **`CaliberHTTP: Import OpenAPI 3.x JSON to .http`** (`caliberhttp.importOpenApi`) converts any OpenAPI 3.0/3.1 JSON specification into a clean, Git-native `.http` collection with `@baseUrl`, Bearer/Basic/API-Key auth headers, path & query parameter synthesis, `$ref` schema resolution, and formatted JSON request bodies.
+
 ## [1.0.0] - 2026-11-27
 
 ### Added

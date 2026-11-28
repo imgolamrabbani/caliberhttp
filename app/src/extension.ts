@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { parseCurl, toCurl } from './core/curlCodec';
+import { importOpenApiToHttp } from './core/openapiImporter';
 import { executeHttpRequest } from './core/httpExecutor';
 import {
   parseHttpDocument,
@@ -631,6 +632,43 @@ export function activate(context: vscode.ExtensionContext): void {
         }
       }
     ),
+
+    vscode.commands.registerCommand('caliberhttp.importOpenApi', async () => {
+      const picked = await vscode.window.showOpenDialog({
+        canSelectMany: false,
+        filters: { 'OpenAPI 3.x JSON': ['json'] },
+        openLabel: 'Import OpenAPI 3.x JSON',
+      });
+      const specUri = picked?.[0];
+      if (!specUri) return;
+
+      const root = getWorkspaceRoot();
+      if (!root) {
+        void vscode.window.showErrorMessage(
+          'Open a workspace folder before importing an OpenAPI specification.'
+        );
+        return;
+      }
+
+      try {
+        const rawJson = await fs.readFile(specUri.fsPath, 'utf8');
+        const result = importOpenApiToHttp(rawJson);
+        const outName = `${path.basename(specUri.fsPath, path.extname(specUri.fsPath))}.http`;
+        const outPath = path.join(root, outName);
+        await fs.writeFile(outPath, result.httpContent, 'utf8');
+        collectionTree.refresh();
+        const doc = await vscode.workspace.openTextDocument(outPath);
+        await vscode.window.showTextDocument(doc, vscode.ViewColumn.One);
+        await openStudio(vscode.Uri.file(outPath));
+        void vscode.window.showInformationMessage(
+          `Imported ${result.operationCount} OpenAPI operation(s) from "${result.title}" into ${outName}.`
+        );
+      } catch (err) {
+        void vscode.window.showErrorMessage(
+          `Failed to import OpenAPI JSON: ${err instanceof Error ? err.message : String(err)}`
+        );
+      }
+    }),
 
     vscode.commands.registerCommand('caliberhttp.exportCurl', async () => {
       if (!activeRequest) {
